@@ -1,13 +1,669 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Мой сайт</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Космический портал</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: Arial; text-align: center; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Orbitron', 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0c0c1d 0%, #0a0722 50%, #16051f 100%);
+            color: #f0f0f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Звездный фон */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(255, 0, 100, 0.1) 0px, transparent 2px),
+                radial-gradient(circle at 20% 50%, rgba(255, 0, 100, 0.1) 0px, transparent 2px),
+                radial-gradient(circle at 80% 40%, rgba(255, 0, 100, 0.1) 0px, transparent 2px),
+                radial-gradient(circle at 90% 70%, rgba(255, 0, 100, 0.1) 0px, transparent 2px);
+            background-size: 300px 300px;
+            z-index: -1;
+            animation: twinkle 15s infinite linear;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+            100% { opacity: 0.3; }
+        }
+
+        /* Шапка сайта */
+        header {
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: rgba(10, 5, 30, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 0, 100, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #ff0064;
+            text-shadow: 0 0 10px rgba(255, 0, 100, 0.7);
+        }
+
+        .logo i {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            color: #f0f0f0;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #ff0064;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #ff0064;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Основной контент */
+        main {
+            margin-top: 100px;
+            padding: 2rem 5%;
+        }
+
+        /* Герой-секция */
+        .hero {
+            height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #ff0064, #ff4da6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px rgba(255, 0, 100, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            background: transparent;
+            color: #ff0064;
+            border: 2px solid #ff0064;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            margin-top: 1.5rem;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 100, 0.3), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            background: rgba(255, 0, 100, 0.1);
+            box-shadow: 0 0 20px rgba(255, 0, 100, 0.5);
+        }
+
+        /* Секции с моделями */
+        .models-section {
+            margin: 5rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #ff0064;
+            text-shadow: 0 0 15px rgba(255, 0, 100, 0.3);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, transparent, #ff0064, transparent);
+        }
+
+        .models-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .model-card {
+            background: rgba(20, 10, 40, 0.6);
+            border: 1px solid rgba(255, 0, 100, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .model-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 0, 100, 0.7);
+            box-shadow: 0 0 30px rgba(255, 0, 100, 0.4);
+        }
+
+        .model-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff0064, #ff4da6, #ff0064);
+            z-index: -1;
+            border-radius: 17px;
+            animation: borderAnimation 3s linear infinite;
+            background-size: 400%;
+        }
+
+        @keyframes borderAnimation {
+            0% { background-position: 0 0; }
+            100% { background-position: 400% 0; }
+        }
+
+        .model-icon {
+            font-size: 3.5rem;
+            color: #ff0064;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .model-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #ff4da6;
+            text-align: center;
+        }
+
+        .model-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .model-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .model-features li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .model-features li::before {
+            content: '✦';
+            color: #ff0064;
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .model-button {
+            display: block;
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255, 0, 100, 0.1);
+            color: #ff4da6;
+            border: 1px solid #ff0064;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .model-button:hover {
+            background: rgba(255, 0, 100, 0.3);
+            box-shadow: 0 0 15px rgba(255, 0, 100, 0.3);
+        }
+
+        /* Галактическая спираль */
+        .galaxy-spiral {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.1;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .spiral {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 0, 100, 0.2);
+            animation: rotate 120s linear infinite;
+        }
+
+        .spiral:nth-child(2) {
+            width: 80%;
+            height: 80%;
+            animation-duration: 100s;
+            animation-direction: reverse;
+        }
+
+        .spiral:nth-child(3) {
+            width: 60%;
+            height: 60%;
+            animation-duration: 80s;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Футер */
+        footer {
+            background: rgba(5, 2, 15, 0.9);
+            padding: 3rem 5%;
+            margin-top: 5rem;
+            border-top: 1px solid rgba(255, 0, 100, 0.2);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #ff4da6;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50%;
+            height: 2px;
+            background: #ff0064;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-links a:hover {
+            color: #ff4da6;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 0, 100, 0.1);
+            color: #ff4da6;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background: rgba(255, 0, 100, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px rgba(255, 0, 100, 0.3);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #777;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                gap: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .models-container {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Привет, РЕБЯТА!</h1>
-    <p>Мой сайт работает круглосуточно!</p>
+    <!-- Шапка сайта -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-rocket"></i>
+            <span>Космический портал</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#"><i class="fas fa-home"></i> Главная</a></li>
+                <li><a href="#"><i class="fas fa-globe"></i> Модели</a></li>
+                <li><a href="#"><i class="fas fa-star"></i> Галактики</a></li>
+                <li><a href="#"><i class="fas fa-user-astronaut"></i> Контакты</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Главная секция -->
+    <main>
+        <section class="hero">
+            <!-- Галактическая спираль на заднем фоне -->
+            <div class="galaxy-spiral">
+                <div class="spiral"></div>
+                <div class="spiral"></div>
+                <div class="spiral"></div>
+            </div>
+            
+            <h1>Добро пожаловать в космическое пространство!</h1>
+            <p>Исследуйте невероятные космические модели и погрузитесь в глубины вселенной с нашими интерактивными симуляторами</p>
+            <button class="cta-button">Начать путешествие <i class="fas fa-arrow-right"></i></button>
+        </section>
+
+        <!-- Секция с моделями -->
+        <section class="models-section">
+            <h2 class="section-title">Наши космические модели</h2>
+            <div class="models-container">
+                <!-- Модель 1 -->
+                <div class="model-card">
+                    <div class="model-icon">
+                        <i class="fas fa-satellite"></i>
+                    </div>
+                    <h3 class="model-title">Галактический навигатор</h3>
+                    <p class="model-description">Продвинутая система навигации по звездным картам и галактическим маршрутам</p>
+                    <ul class="model-features">
+                        <li>3D карта известной вселенной</li>
+                        <li>Расчет межзвездных маршрутов</li>
+                        <li>Поиск экзопланет в реальном времени</li>
+                        <li>Анализ гравитационных волн</li>
+                    </ul>
+                    <button class="model-button">Активировать <i class="fas fa-play"></i></button>
+                </div>
+                
+                <!-- Модель 2 -->
+                <div class="model-card">
+                    <div class="model-icon">
+                        <i class="fas fa-meteor"></i>
+                    </div>
+                    <h3 class="model-title">Симулятор черных дыр</h3>
+                    <p class="model-description">Интерактивное моделирование поведения пространства-времени</p>
+                    <ul class="model-features">
+                        <li>Визуализация гравитационных линз</li>
+                        <li>Симуляция аккреционного диска</li>
+                        <li>Моделирование релятивистских эффектов</li>
+                        <li>Анализ излучения Хокинга</li>
+                    </ul>
+                    <button class="model-button">Активировать <i class="fas fa-play"></i></button>
+                </div>
+                
+                <!-- Модель 3 -->
+                <div class="model-card">
+                    <div class="model-icon">
+                        <i class="fas fa-stars"></i>
+                    </div>
+                    <h3 class="model-title">Звездный генератор</h3>
+                    <p class="model-description">Создавайте собственные звездные системы и наблюдайте их эволюцию</p>
+                    <ul class="model-features">
+                        <li>Генерация планетарных систем</li>
+                        <li>Моделирование жизненного цикла звезд</li>
+                        <li>Симуляция колонизации планет</li>
+                        <li>Прогнозирование космических событий</li>
+                    </ul>
+                    <button class="model-button">Активировать <i class="fas fa-play"></i></button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Подвал сайта -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Космический портал</h3>
+                <p>Исследуйте вселенную вместе с нами. Наши технологии позволяют прикоснуться к тайнам космоса.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Навигация</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Главная</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> О проекте</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Космические модели</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Галактическая база</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Контакты</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Технологии</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> WebGL визуализация</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Астрономические данные NASA</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Искусственный интеллект</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Квантовые вычисления</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Контакты</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> Орбитальная станция, Сектор 7G</a></li>
+                    <li><a href="#"><i class="fas fa-envelope"></i> contact@spaceportal.com</a></li>
+                    <li><a href="#"><i class="fas fa-phone-alt"></i> +7 (495) 123-45-67</a></li>
+                    <li><a href="#"><i class="fas fa-satellite-dish"></i> Частота 1420.40575177 МГц</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2023 Космический портал. Все права защищены. Сделано с <i class="fas fa-heart" style="color: #ff0064;"></i> на Земле</p>
+        </div>
+    </footer>
+
+    <script>
+        // Анимация для кнопок
+        document.querySelectorAll('.cta-button, .model-button').forEach(button => {
+            button.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+                
+                // Анимация пульсации
+                const pulse = document.createElement('div');
+                pulse.style.position = 'absolute';
+                pulse.style.borderRadius = '50px';
+                pulse.style.backgroundColor = 'rgba(255, 0, 100, 0.3)';
+                pulse.style.width = '0';
+                pulse.style.height = '0';
+                pulse.style.top = '50%';
+                pulse.style.left = '50%';
+                pulse.style.transform = 'translate(-50%, -50%)';
+                pulse.style.opacity = '1';
+                pulse.style.transition = 'all 0.5s ease-out';
+                pulse.style.pointerEvents = 'none';
+                this.appendChild(pulse);
+                
+                setTimeout(() => {
+                    pulse.style.width = (this.offsetWidth * 2) + 'px';
+                    pulse.style.height = (this.offsetHeight * 2) + 'px';
+                    pulse.style.opacity = '0';
+                }, 10);
+                
+                setTimeout(() => {
+                    pulse.remove();
+                }, 600);
+            });
+        });
+
+        // Анимация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            const title = document.querySelector('.hero h1');
+            const subtitle = document.querySelector('.hero p');
+            const button = document.querySelector('.cta-button');
+            
+            setTimeout(() => {
+                title.style.opacity = '1';
+                title.style.transform = 'translateY(0)';
+            }, 300);
+            
+            setTimeout(() => {
+                subtitle.style.opacity = '1';
+                subtitle.style.transform = 'translateY(0)';
+            }, 700);
+            
+            setTimeout(() => {
+                button.style.opacity = '1';
+                button.style.transform = 'translateY(0)';
+            }, 1100);
+        });
+    </script>
 </body>
 </html>
